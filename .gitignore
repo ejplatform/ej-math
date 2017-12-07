@@ -1,0 +1,66 @@
+#
+# Build files and folders
+#
+__pycache__/
+*.egg-info/
+build/
+dist/
+.tox/
+*.pyc
+*.pyo
+*.pyd
+*.egg
+*.o
+*.so
+*.dll
+*.exe
+*.com
+*.class
+.coverage
+.coverage.xml
+
+
+#
+# IDEs and editors
+#
+.cache/
+.idea/
+.vscode/
+.project/
+
+
+#
+# Packages
+#
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+*.bak
+
+
+#
+# Logs and private data
+#
+*.log
+*.sql
+*.sqlite
+/local/
+
+
+#
+# OS and tool generated files
+#
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*~
+*#

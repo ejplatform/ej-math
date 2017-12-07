@@ -1,0 +1,23 @@
+language: python
+cache: pip
+sudo: false
+
+matrix:
+  include:
+   - env: TOXENV=py35
+     python: 3.5
+   - env: TOXENV=py36
+     python: 3.6
+   - env: TOXENV=py37
+     python: 3.7
+
+# Package installation
+install:
+  - pip install tox coveralls
+
+# Run the tests
+script:
+  tox
+
+after_success:
+  coveralls
