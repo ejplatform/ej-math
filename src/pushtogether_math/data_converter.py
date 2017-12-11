@@ -20,4 +20,4 @@ def convert_to_dataframe(votes):
     users = get_users_set(votes)
     votes_dataframe = pd.DataFrame(index=users, columns=comments)
     populate_dataframe(votes_dataframe, votes)
-    return votes_dataframe
+    return votes_dataframe.fillna(0)
