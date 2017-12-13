@@ -1,8 +1,11 @@
 import pandas as pd
 from sklearn.cluster import KMeans
+from celery import Celery
 
 from . import decomposer
 from . import data_converter
+
+app = Celery('cluster', backend='rpc://', broker='pyamqp://localhost/')
 
 def get_labels(data, n_clusters=2):
     """
@@ -25,6 +28,7 @@ def create_cluster_info_dataframe(votes, pca_votes, users_labels):
 
     return grouped_dataframe
 
+@app.task
 def make_clusters(votes):
     """
     Converts the vote list in a Pandas DataFrame that passes through a PCA
@@ -39,4 +43,4 @@ def make_clusters(votes):
     users_labels = get_labels(pca_votes)
     grouped_users_info = create_cluster_info_dataframe(votes_dataframe, pca_votes, users_labels)
 
-    return grouped_users_info
+    return grouped_users_info.T.to_dict()
