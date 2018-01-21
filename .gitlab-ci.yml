@@ -1,0 +1,15 @@
+stages:
+  - test
+
+##########
+## Develop
+##########
+test to develop:
+  stage: test
+  image: python:3.6
+  script:
+    - pip install tox
+    - tox
+  only:
+    - /develop/
+  environment: development
