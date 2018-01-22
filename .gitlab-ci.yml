@@ -8,7 +8,7 @@ test to develop:
   stage: test
   image: python:3.6
   script:
-    - pip install tox
+    - pip install -e .[dev] -U tox
     - tox
   only:
     - /develop/
