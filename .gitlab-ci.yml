@@ -30,7 +30,7 @@ deploy to homolog:
   script:
     - python setup.py sdist
     - pip install twine
-    - ls ./dist | while read pkg; do twine upload -u $TESTPIPY_USER -p $TESTPIPY_PASSWORD --repository testpypi ./dist/$pkg; done
+    - ls ./dist | while read pkg; do twine upload -u $TESTPYPI_USER -p $TESTPYPI_PASSWORD --config-file .pypirc --repository testpypi ./dist/$pkg; done
   only:
     - /develop/
   environment: homolog
