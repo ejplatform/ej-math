@@ -1,10 +1,11 @@
 stages:
   - test
+  - deploy
 
 ##########
 ## Develop
 ##########
-test to develop:
+test to develop: &tox
   stage: test
   image: python:3.6
   script:
@@ -13,3 +14,25 @@ test to develop:
   only:
     - /develop/
   environment: development
+
+
+##########
+## Homolog
+##########
+test to homolog:
+  << : *tox
+  only:
+    - /master/
+  environment: homolog
+  
+deploy to homolog:
+  stage: deploy
+  image: python:3.6
+  script:
+    - python manage.py sdist
+    - pip install twine
+    - ls ./dist | while read pkg; do twine register -u $TESTPIPY_USER -p $TESTPIPY_PASSWD --repository testpypi $pkg; done
+    - twine upload --repository testpypi dist/*
+  only:
+    - /develop/
+  environment: homolog
