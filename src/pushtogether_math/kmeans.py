@@ -1,6 +1,5 @@
 import pandas as pd
 from sklearn.cluster import KMeans
-import os
 
 from . import decomposer
 from . import data_converter
@@ -23,7 +22,7 @@ def create_cluster_info_dataframe(votes, pca_votes, users_labels):
     Generates a Pandas DataFrame with the clustering information.
     Returns the X, Y and group_id values
     """
-    dataframe = pd.DataFrame(pca_votes, index=votes.index, columns=['x','y'])
+    dataframe = pd.DataFrame(pca_votes, index=votes.index, columns=['x', 'y'])
     grouped_dataframe = dataframe.assign(group=users_labels)
 
     return grouped_dataframe

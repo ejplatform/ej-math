@@ -1,5 +1,6 @@
 from sklearn import decomposition
 
+
 def pca_decompose(dataset, n=2):
     """
     Applies the PCA to reduce the dimensionality of the dataset
