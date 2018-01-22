@@ -1,6 +1,6 @@
 import pytest
 
-from src.pushtogether_math import cluster
+from pushtogether_math import cluster
 
 class TestCluster:
 
