@@ -1,0 +1,56 @@
+stages:
+  - test
+  - deploy
+
+##########
+## Develop
+##########
+test to develop: &tox
+  stage: test
+  image: python:3.6
+  script:
+    - pip install -e .[dev] -U tox
+    - tox
+  only:
+    - /develop/
+  environment: development
+
+##########
+## Homolog
+##########
+test to homolog:
+  << : *tox
+  only:
+    - /master/
+  environment: homolog
+
+deploy to homolog:
+  stage: deploy
+  image: python:3.6
+  script:
+    - python setup.py sdist
+    - pip install twine
+    - ls ./dist | while read pkg; do twine upload -u $TESTPYPI_USER -p $TESTPYPI_PASSWORD --config-file .pypirc --repository testpypi ./dist/$pkg; done
+  only:
+    - /master/
+  environment: homolog
+
+##########
+## Production
+##########
+test to production:
+  << : *tox
+  only:
+    - tags
+  environment: production
+
+deploy to production:
+  stage: deploy
+  image: python:3.6
+  script:
+    - python setup.py sdist
+    - pip install twine
+    - ls ./dist | while read pkg; do twine upload -u $TESTPYPI_USER -p $TESTPYPI_PASSWORD --config-file .pypirc ./dist/$pkg; done
+  only:
+    - tags
+  environment: production
