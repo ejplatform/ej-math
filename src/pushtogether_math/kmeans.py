@@ -12,7 +12,7 @@ def get_labels(data, n_clusters=2):
     return the labels with respective user's groups
     """
     kmeans = KMeans(n_clusters=n_clusters, max_iter=300, verbose=0, random_state=0)
-    labels = kmeans.fit_predict(data)
+    labels = kmeans.fit(data)
 
     return labels
 
@@ -48,6 +48,18 @@ def create_cluster_info_dataframe(votes, pca_votes, users_labels):
     return grouped_dataframe
 
 
+def normalize_coordinates(cluster_info_dataframe):
+    """
+    All coordinate values will be arranged between -100 and 100.
+    The maximum value of each coordinate will be assumed as 100, then all the
+    values will me arrange following a proportional distortion.
+    """
+    max_values = cluster_info_dataframe.max()
+    cluster_info_dataframe['x'] *= 100 / max_values['x']
+    cluster_info_dataframe['y'] *= 100 / max_values['y']
+    return cluster_info_dataframe
+
+
 def make_clusters(votes, n_clusters_range):
     """
     Converts the vote list in a Pandas DataFrame that passes through a PCA
@@ -60,7 +72,8 @@ def make_clusters(votes, n_clusters_range):
     votes_dataframe = data_converter.convert_to_dataframe(votes)
     pca_votes = decomposer.pca_decompose(votes_dataframe.values)
     users_labels = get_labels_with_max_silhouette(pca_votes, n_clusters_range)
-    grouped_users_info = create_cluster_info_dataframe(
-        votes_dataframe, pca_votes, users_labels)
+    clustered_users_info = create_cluster_info_dataframe(votes_dataframe,
+                                                         pca_votes, users_labels)
+    normalized_users_info = normalize_coordinates(clustered_users_info)
 
-    return grouped_users_info.T.to_dict()
+    return normalized_users_info.T.to_dict()
