@@ -19,3 +19,11 @@ class TestCluster:
         response = cluster.get_clusters(votes)
         assert response[1]['group'] != response[3]['group']
         assert response[2]['group'] != response[4]['group']
+
+    def test_cluster_users_using_silhouette(self, votes):
+        """
+        These users should be clustered in only three different clusters
+        """
+        response = cluster.get_clusters(votes, range(2,5))
+        assert response[1]['group'] == response[2]['group']
+        assert response[3]['group'] != response[4]['group']
