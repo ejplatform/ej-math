@@ -6,35 +6,38 @@ from . import decomposer
 from . import data_converter
 
 
-def get_labels(data, n_clusters=2):
+def get_kmeans(data, n_clusters=2):
     """
     Receives a Numpy Array and applies sklearn KMeans clustering algorithm to
     return the labels with respective user's groups
     """
     kmeans = KMeans(n_clusters=n_clusters, max_iter=300, verbose=0, random_state=0)
-    labels = kmeans.fit(data)
-
-    return labels
+    return kmeans.fit(data)
 
 
-def get_labels_with_max_silhouette(data, n_clusters_range):
+def get_kmeans_with_max_silhouette(data, n_clusters_range):
     """
     Receives a Numpy Array and applies sklearn KMeans clustering algorithm
     to a range of numbers of clusters and calculates the silhouette value
     for each one, then returns the KMeans labels with the max silhouette
     """
     first_n_clusters, *rest_n_clusters = n_clusters_range
+    n_clusters_limit = len(data) - 1
     silhouette = None
-    best_labels = get_labels(data, first_n_clusters)
+    best_kmeans = get_kmeans(data, first_n_clusters)
     for n_clusters in rest_n_clusters:
-        labels = get_labels(data, n_clusters)
-        if set(labels) > 1:
-            current_silhouette = silhouette_score(data, labels)
+        # Valid values are 2 to n_samples - 1 (inclusive)
+        if n_clusters > n_clusters_limit:
+            continue
+
+        kmeans = get_kmeans(data, n_clusters)
+        if len(set(kmeans.labels_)) > 1:
+            current_silhouette = silhouette_score(data, kmeans.labels_)
             if silhouette is None or current_silhouette > silhouette:
                 silhouette = current_silhouette
-                best_labels = labels
+                best_kmeans = kmeans
 
-    return best_labels
+    return best_kmeans
 
 
 def create_cluster_info_dataframe(votes, pca_votes, users_labels):
@@ -43,7 +46,7 @@ def create_cluster_info_dataframe(votes, pca_votes, users_labels):
     Returns the X, Y and group_id values
     """
     dataframe = pd.DataFrame(pca_votes, index=votes.index, columns=['x', 'y'])
-    grouped_dataframe = dataframe.assign(group=users_labels.labels_)
+    grouped_dataframe = dataframe.assign(group=users_labels)
 
     return grouped_dataframe
 
@@ -71,9 +74,9 @@ def make_clusters(votes, n_clusters_range):
     """
     votes_dataframe = data_converter.convert_to_dataframe(votes)
     pca_votes = decomposer.pca_decompose(votes_dataframe.values)
-    users_labels = get_labels_with_max_silhouette(pca_votes, n_clusters_range)
+    kmeans = get_kmeans_with_max_silhouette(pca_votes, n_clusters_range)
     clustered_users_info = create_cluster_info_dataframe(votes_dataframe,
-                                                         pca_votes, users_labels)
+                                                         pca_votes, kmeans.labels_)
     normalized_users_info = normalize_coordinates(clustered_users_info)
 
     return normalized_users_info.T.to_dict()
