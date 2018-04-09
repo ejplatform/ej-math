@@ -2,12 +2,12 @@
 Installation instructions
 =========================
 
-pushtogether-math can be installed using pip::
+ej-math can be installed using pip::
 
-    $ python -m pip install pushtogether-math
+    $ python -m pip install ej-math
 
 This command will fetch the archive and its dependencies from the internet and
-install them. 
+install them.
 
 If you've downloaded the tarball, unpack it, and execute::
 

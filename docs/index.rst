@@ -1,5 +1,5 @@
 ================================================================================
-Welcome pushtogether-math's documentation!
+Welcome ej-math's documentation!
 ================================================================================
 
 .. include:: warning.rst

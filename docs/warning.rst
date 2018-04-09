@@ -6,4 +6,4 @@
     If you plan to use this software for something important, please read the
     roadmap, and the issue tracker in Github. If you are unsure about the
     future of this project, please talk to the developers, or (better yet) get
-    involved with the development of pushtogether-math!
+    involved with the development of ej-math!

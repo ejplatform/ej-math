@@ -2,7 +2,7 @@
 API Reference
 =============
 
-API documentation for the pushtogether-math module.
+API documentation for the ej-math module.
 
-.. automodule:: pushtogether-math
+.. automodule:: ej-math
    :members:

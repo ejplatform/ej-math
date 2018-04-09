@@ -1,6 +1,6 @@
 import pytest
 
-from pushtogether_math import cluster
+from ej_math import cluster
 
 class TestCluster:
 
@@ -11,7 +11,7 @@ class TestCluster:
         response = cluster.get_clusters(votes)
         assert response[1]['group'] == response[2]['group']
         assert response[3]['group'] == response[4]['group']
-    
+
     def test_cluster_users_on_different_clusters(self, votes):
         """
         These users should be clustered in different groups

@@ -1,6 +1,5 @@
-Pushing Together Math Module
+ej-math Module
 ========================
 
-pushtogether math is a machine learning module of Pushing Together project
-to calculate the cluster of users based on their opinion using scikit-learn
-Kmeans and PCA
+ej-math is a machine learning module of ejplatform to calculate the cluster of
+users based on their opinion using scikit-learn, Kmeans, and PCA
